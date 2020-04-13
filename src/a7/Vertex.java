@@ -1,6 +1,6 @@
 package a7;
 
-public interface Vertex {
+public interface Vertex extends Comparable<Vertex>{
 
 	Vertex getPathFromSource();
 	void setPathFromSource(Vertex v);
@@ -9,5 +9,13 @@ public interface Vertex {
 	}
 	boolean hasPathFromSource();
 	
-	int getDistanceFromSource();
+	int getPathWeight();
+	
+	void setPathWeight(int length);
+	
+	void setProcessed();
+	
+	boolean hasProcessed();
+	
+	
 }

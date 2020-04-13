@@ -4,7 +4,8 @@ public class LabeledVertex implements Vertex {
 
 	private String _label;
 	private Vertex _path_from_source;
-	private int _distance_from_source;
+	private int _path_weight;
+	private boolean hasProcessed = false;
 	
 	public LabeledVertex(String label) {
 		if (label == null) {
@@ -13,7 +14,7 @@ public class LabeledVertex implements Vertex {
 		
 		_label = label;		
 		_path_from_source = null;
-		_distance_from_source = 0;
+		_path_weight = Integer.MAX_VALUE;
 	}
 	
 	@Override
@@ -41,28 +42,44 @@ public class LabeledVertex implements Vertex {
 
 	@Override
 	public void setPathFromSource(Vertex v) {
-		_path_from_source = v;
-		if (v != null) {
-			if (v == this) {
-				_distance_from_source = 0;
-			} else {
-				_distance_from_source = v.getDistanceFromSource()+1;
-			}
-		} else {
-			_distance_from_source = -1;
-		}			
-	}
-
-	@Override
-	public int getDistanceFromSource() {
-		if (_path_from_source == null) {
-			throw new RuntimeException("No path from source");
-		}
-		return _distance_from_source;
+		_path_from_source = v;		
 	}
 
 	@Override
 	public boolean hasPathFromSource() {
 		return _path_from_source != null;
 	}
+
+	@Override
+	public int getPathWeight() {
+		return _path_weight;
+	}
+
+	@Override
+	public void setPathWeight(int length) {
+		_path_weight = length;
+		
+	}
+	
+	public void setProcessed() {
+		hasProcessed = true;
+	}
+
+	public boolean hasProcessed() {
+		return hasProcessed;
+	}
+
+	@Override
+	public int compareTo(Vertex other) {
+		if (this.getPathWeight() > other.getPathWeight()) {
+			return 1;
+		}
+		else if (this.getPathWeight() < other.getPathWeight()) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
 }
